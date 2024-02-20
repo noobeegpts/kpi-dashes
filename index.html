@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPI Dashboard for Project Managers</title>
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-xl font-bold my-4">KPI Dashboard for Project Managers</h1>
+        
+        <div class="mb-8">
+            <label for="projectInput" class="block mb-2 text-sm font-medium text-gray-900">Enter Project Name:</label>
+            <input type="text" id="projectInput" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+        </div>
+
+        <button id="submitButton" class="text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Submit</button>
+
+        <!-- KPI Display Area -->
+        <div id="kpiDisplay" class="mt-8"></div>
+
+        <!-- Metric Boxes Area -->
+        <div id="metricsArea" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
+            <!-- Budget Goal -->
+            <div class="p-4 bg-white rounded-lg shadow-md">
+                <h4 class="font-bold">Budget Goal</h4>
+                <p id="budgetGoal" class="text-gray-600">Loading...</p>
+            </div>
+
+            <!-- Added Users -->
+            <div class="p-4 bg-white rounded-lg shadow-md">
+                <h4 class="font-bold">Added Users</h4>
+                <p id="addedUsers" class="text-gray-600">Loading...</p>
+            </div>
+
+            <!-- Placeholder for 3 more metrics (will be filled by JS) -->
+            <div class="p-4 bg-white rounded-lg shadow-md">
+                <h4 class="font-bold">Metric 3</h4>
+                <p class="text-gray-600">Data...</p>
+            </div>
+
+            <div class="p-4 bg-white rounded-lg shadow-md">
+                <h4 class="font-bold">Metric 4</h4>
+                <p class="text-gray-600">Data...</p>
+            </div>
+
+            <div class="p-4 bg-white rounded-lg shadow-md">
+                <h4 class="font-bold">Metric 5</h4>
+                <p class="text-gray-600">Data...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('submitButton').addEventListener('click', function() {
+            const projectName = document.getElementById('projectInput').value;
+            const kpiDisplay = document.getElementById('kpiDisplay');
+            
+            kpiDisplay.innerHTML = `
+                <div class="p-6 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">Project Name: ${projectName}</h5>
+                    <p class="font-normal text-gray-700">Custom KPI data will be displayed here.</p>
+                </div>
+            `;
+        });
+
+        // Simulate fetching data from the static JSON file
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('budgetGoal').textContent = data.budgetGoal;
+                document.getElementById('addedUsers').textContent = data.addedUsers;
+
+                // Load additional metrics
+                data.metrics.forEach((metric, index) => {
+                    document.querySelector(`#metricsArea > div:nth-child(${index + 3}) > p`).textContent = `${metric.name}: ${metric.value}`;
+                });
+            })
+            .catch(error => console.error('Error loading data:', error));
+        });
+    </script>
+</body>
+</html>
